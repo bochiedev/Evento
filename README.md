@@ -27,8 +27,8 @@ To get the app running just simply do:
 
   * Add the following to the .bashrc file replacing the value in {} with the correct string;
      > export SECRET_KEY={your_secret_key}
-       export EMAIL_HOST_USER={your_email_user}
-       export EMAIL_HOST_PASSWORD={your_email_password}
+     > export EMAIL_HOST_USER={your_email_user}
+     > export EMAIL_HOST_PASSWORD={your_email_password}
 
 * Make/Run Migrations;
   > * python manage.py makemigrations
