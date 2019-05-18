@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}">Evento</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    {% url 'home' as home %}
+
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {% if request.path == home %} active {%endif%}">
+        <a class="nav-link" href="{% url 'home' %}">Home </a>
+      </li>
+      <li class="nav-item {% if request.path == events %} active {%endif%}">
+        <a class="nav-link" href="#">Events</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">{{ request.user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:logout' %}">Log Out</a>
+          </li>
+      {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:login' %}">Login </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:register' %}">Register</a>
+          </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
