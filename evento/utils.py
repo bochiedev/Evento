@@ -7,7 +7,7 @@ import math, random
 from datetime import datetime, timedelta
 from django.utils import timezone
 
-def generateOTP() :
+def generateOTP():
     digits = "0123456789"
     OTP = ""
 
