@@ -42,7 +42,7 @@ class UserCreationForm(forms.ModelForm):
         validate_password = validate.validate_password()
 
         if validate_password == True:
-            password = validate_password
+            password = self.cleaned_data['password']
         else:
             raise forms.ValidationError(validate_password)
 

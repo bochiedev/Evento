@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auth.urls')),
     path('events/', include('events.urls')),
-    path('home/', HomeView.as_view(), name='home')
+    path('', HomeView.as_view(), name='home')
 ]
 
 if settings.DEBUG:

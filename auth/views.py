@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.views import View
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from auth.forms import UserCreationForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -35,11 +33,13 @@ class RegisterView(View):
         if form.is_valid():
 
             user_obj = form.save(commit=False)
+            password = form.cleaned_data['password']
 
-            user_obj.set_password(form.cleaned_data['password'])
+            user_obj.set_password(password)
             user_obj.is_superuser = False
             user_obj.is_staff = False
             user_obj.save()
+
 
             send_mail = send_email(subject = 'Welcome To Envento', mail_from='bochiegfx@gmail.com', to_emails=[form.cleaned_data['email']], template='includes/welcome.html', data={'username': form.cleaned_data['username']})
 
@@ -77,7 +77,6 @@ class LoginView(View):
 
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Welcome Back!')
                 return redirect("home")
 
             else:
