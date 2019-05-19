@@ -2,6 +2,21 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import re
+from django.utils.text import slugify
+import math, random
+from datetime import datetime, timedelta
+from django.utils import timezone
+
+def generateOTP() :
+    digits = "0123456789"
+    OTP = ""
+
+    for i in range(6) :
+        OTP += digits[math.floor(random.random() * 10)]
+    return OTP
+
+def now_plus_5_minutes():
+    return datetime.now() + timezone.timedelta(minutes=5)
 
 class Validate:
     def __init__(self, email=None, password=None, confirm_password=None):
@@ -49,3 +64,14 @@ def send_email(subject, mail_from, to_emails, template, data):
     send_mail = mail.send_mail(subject, plain_message, from_email, to_emails, html_message=html_message, fail_silently=False)
 
     return send_mail
+
+def unique_slug_generator(model_instance, title, slug_field):
+    slug = slugify(title)
+    model_class = model_instance.__class__
+
+    while model_class._default_manager.filter(slug=slug).exists():
+        object_pk = model_class._default_manager.latest('pk')
+        object_pk = object_pk.pk + 1
+        slug = f'{slug}-{object_pk}'
+
+    return slug
