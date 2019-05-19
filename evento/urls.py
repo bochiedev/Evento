@@ -7,7 +7,7 @@ from evento.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('auth.urls')),
+    path('auth/', include('accounts.urls')),
     path('events/', include('events.urls')),
     path('', HomeView.as_view(), name='home')
 ]

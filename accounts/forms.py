@@ -54,3 +54,6 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username']
+
+class OTPForm(forms.Form):
+    otp = forms.IntegerField()
