@@ -13,7 +13,10 @@ To get the app running just simply do:
   > * pip install virtualenv
 
 * Create a virtualenv ;
-  > * virtualenv -p python3 venv             
+  > * virtualenv -p python3 venv    
+  
+* Activate virtualenv ;
+  > * source venv/bin/activate  
 
 * Install the requirements;
    > * pip install -r requirements.txt
