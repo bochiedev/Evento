@@ -4,8 +4,10 @@ from django.views import View
 from accounts.forms import UserCreationForm, LoginForm, OTPForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from evento.utils import send_email, generateOTP
+from evento.utils import send_email, generateOTP, Validate
 from .models import OTP
+from django.http import JsonResponse
+
 
 # Create your views here.
 class RegisterView(View):
@@ -40,15 +42,24 @@ class RegisterView(View):
             user_obj.is_superuser = False
             user_obj.is_staff = False
             user_obj.save()
-
-
             send_mail = send_email(subject = 'Welcome To Envento', mail_from='bochiegfx@gmail.com', to_emails=[form.cleaned_data['email']], template='includes/welcome.html', data={'username': form.cleaned_data['username']})
 
-            messages.success(request ,f'Welcome to Envento, Login to access account!')
-            return redirect("auth:login")
+            data = {
+                'success' :True,
+                'message': 'Welcome to Envento, Login to access account!',
+                }
+
+            return JsonResponse(data)
 
         else:
-            return render(request,'auth/register.html', {'form': form})
+            error_message = dict([(key, [error for error in value]) for key, value in form.errors.items()])
+
+            data = {
+                'success' :False,
+                "message":error_message
+            }
+            return JsonResponse(data)
+
 
 class LoginView(View):
     title = "Evento | Login"
@@ -135,3 +146,39 @@ class OTPView(View):
             except:
                 messages.error(request, 'OTP Does not exist!')
                 return redirect("auth:otp")
+
+def validate_password(request):
+    password = request.GET.get('password', None)
+
+    validate = Validate(password=password)
+    validate_password = validate.validate_password()
+
+    if validate_password == True:
+        response = validate_password
+        validate_password = "Password is strong!"
+    else:
+        response = False
+        validate_password = validate_password
+
+    data = {
+        'password_response': response,
+        'message': validate_password
+
+    }
+    return JsonResponse(data)
+
+def validate_email(request):
+    email = request.GET.get('email', None)
+    is_taken = User.objects.filter(email__iexact=email).exists()
+
+    data = {
+        'email_is_taken': is_taken
+    }
+    return JsonResponse(data)
+
+def validate_username(request):
+    username = request.GET.get('username', None)
+    data = {
+        'username_is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(data)

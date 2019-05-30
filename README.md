@@ -14,7 +14,7 @@ To get the app running just simply do:
 
 * Create a virtualenv ;
   > * virtualenv -p python3 venv    
-  
+
 * Activate virtualenv ;
   > * source venv/bin/activate  
 
@@ -30,6 +30,8 @@ To get the app running just simply do:
 
   * Add the following to the .bashrc file replacing the value in {} with the correct string;
      > * export SECRET_KEY={your_secret_key}
+     > * export EMAIL_HOST={your_email_host} eg smtp.gmail.com for gmail
+     > * export EMAIL_PORT={your_email_port} eg 587(integer) for gmail
      > * export EMAIL_HOST_USER={your_email_user}
      > * export EMAIL_HOST_PASSWORD={your_email_password}
 

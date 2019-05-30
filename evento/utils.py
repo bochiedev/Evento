@@ -19,10 +19,9 @@ def now_plus_5_minutes():
     return datetime.now() + timezone.timedelta(minutes=5)
 
 class Validate:
-    def __init__(self, email=None, password=None, confirm_password=None):
+    def __init__(self, email=None, password=None):
         self.email = email
         self.password = password
-        self.confirm_password = confirm_password
 
     def validate_password(self):
         if len(self.password) < 6:
@@ -40,8 +39,6 @@ class Validate:
         elif not re.search("[_@$#!*]", self.password):
             resp = 'password field must contain one of the following characters _ @ $ # ! *'
 
-        elif self.password != self.confirm_password:
-            resp = 'Passwords do not match.'
         else:
             resp = True
         return resp

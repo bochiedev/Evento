@@ -4,13 +4,25 @@ from evento.utils import Validate
 
 
 class UserCreationForm(forms.ModelForm):
-    confirm_password = forms.CharField(widget=forms.PasswordInput,label="Confirm Password")
     password = forms.CharField(widget=forms.PasswordInput,label="Password")
-
 
     class Meta:
         model = User
         fields = ('username','email','password')
+        widgets = {
+            'username': forms.TextInput(attrs={"placeholder":"Enter Username"}),
+            'email': forms.EmailInput(attrs={"placeholder":"Enter Email Address"}),
+            'password': forms.PasswordInput(attrs={"placeholder":"Enter Password"}),
+
+        }
+
+    def __init__(self,  *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['password'].help_text = "Password must contain a minimum of 6 characters, atleast one uppercase,one lowercase, one digit and a character "
+        self.fields['email'].help_text = "Enter a valid email"
+        self.fields['username'].help_text = "Letters digits and characters only"
+
+
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -35,10 +47,8 @@ class UserCreationForm(forms.ModelForm):
 
     def clean_password(self):
         password = self.cleaned_data['password']
-        confirm_password = self.data['confirm_password']
 
-
-        validate = Validate(password=password, confirm_password=confirm_password)
+        validate = Validate(password=password)
         validate_password = validate.validate_password()
 
         if validate_password == True:
@@ -46,8 +56,9 @@ class UserCreationForm(forms.ModelForm):
         else:
             raise forms.ValidationError(validate_password)
 
-
         return password
+
+
 class LoginForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 

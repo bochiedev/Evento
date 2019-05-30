@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <style media="screen">
   body{
@@ -11,19 +12,37 @@
   <div class="row justify-content-center">
 
     <div class="col-md-6 col-xs-12">
-       <form method="post" action="">
+       <form id="register_form" method="post" action="" data-validate-username-url="{% url 'auth:validate_username' %}" data-validate-email-url="{% url 'auth:validate_email' %}" data-validate-password-url="{% url 'auth:validate_password' %}">
          {% csrf_token %}
+
          <legend class="text-center">Please Register</legend>
          <hr>
 
-         {% include 'includes/form_fields.html' with field=form.username %}
-         {% include 'includes/form_fields.html' with field=form.email %}
-         {% include 'includes/form_fields.html' with field=form.password %}
-         {% include 'includes/form_fields.html' with field=form.confirm_password %}
+         <div id="results"></div>
+
+
+          <div class="form-group">
+            {% render_field form.username class="form-control" %}
+            <small><b class="username-form-text form-text text-muted">{{ form.username.help_text }}</b></small>
+
+          </div>
+
+          <div class="form-group">
+            {% render_field form.email class="form-control" %}
+            <small><b class="email-form-text form-text text-muted">{{ form.email.help_text }}</b></small>
+
+          </div>
+
+          <div class="form-group">
+            {% render_field form.password class="form-control" %}
+            <small><b class="password-form-text form-text text-muted">{{ form.password.help_text }}</b></small>
+
+          </div>
+
 
 
          <div class="mt-3">
-           <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+           <button class="btn btn-lg btn-primary btn-block" type="submit" id="register">Register</button>
          </div>
        </form>
      </div>

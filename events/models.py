@@ -15,6 +15,12 @@ class Event(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    class Meta:
+        permissions = (
+            ('can_create', "Can Create Event"),
+            ('can_delete_event', "Can Delete Event")
+        )
+
 
 
 def slug_save(sender, instance, *args, **kwargs):
